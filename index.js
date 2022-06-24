@@ -2,8 +2,9 @@ let playing = true;
 let message = document.getElementById("main-message");
 let cards = document.getElementById("cards-paragraph");
 let sumedCards = document.getElementById("sum-paragraph");
+let standButton = document.getElementById("stand-button");
 let startGameButton = document.getElementById("start-game-button")
-let newCardButton = document.getElementById("start-game-button")
+let newCardButton = document.getElementById("new-card-button")
 
 function checkBlackjack(sumOfCards){
     if (sumOfCards === 21) {
@@ -16,25 +17,38 @@ function checkBlackjack(sumOfCards){
     playing = false;}
 }
 
-function newCard(){
-    console.log("drawing new card from the deck")
-}
-
 function getCards(){
     return Math.floor(Math.random() * 10) + 2;
 }
 
-function startGame() {
+function hit(){
+    
+}
+
+function stand(){
+    console.log("I stand still!!")
+}
+
+
+
+function startGame(){
     startGameButton.textContent = "Restart Game";
     cards.style.visibility = "visible";
     sumedCards.style.visibility = "visible";
+    newCardButton.style.visibility = "visible";
+    standButton.style.visibility = "visible";
     playing = true;
-    let firstCard = getCards();
-    cards.textContent = "cards: " + firstCard;
-    let secondCard = getCards();
-    cards.textContent += ", " + secondCard;
-    let sumOfCards = firstCard + secondCard
-    sumedCards.textContent = "sum: " + sumOfCards;
+    Game();
+}
+
+function Game() {
+    let playerCards = []; 
+    playerCards[0] = getCards();
+    cards.textContent = "your cards: " + playerCards[0];
+    playerCards[1] = getCards();
+    cards.textContent += ", " + playerCards[1];
+    let sumOfCards = playerCards[0] + playerCards[1];
+    sumedCards.textContent = "your sum: " + sumOfCards;
     
     checkBlackjack(sumOfCards);
     

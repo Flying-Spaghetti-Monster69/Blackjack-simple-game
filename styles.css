@@ -30,11 +30,17 @@ main {
     color: rgb(208, 0, 0);
 }
 
-p {
-    color: white;
+.message{
+    font-size: 2.5em;
     padding-top: 2vh;
     padding-bottom: 2vh;
-    font-size: 2.5em;
+}
+
+p {
+    color: white;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
+    font-size: 2em;
 }
 
 .display-game{
@@ -43,11 +49,29 @@ p {
 
 .main-buttons {
     display: block;
-    margin: 0.25em auto;
+    margin: 0.25rem auto;
     width: 50%; 
-    padding: 0.5em;
+    padding: 1rem;
     text-align: center;
     color: rgb(1, 1, 1);
-    width: 9.375rem;
+    width: 18.75rem;
+    font-weight: 700;
+    font-size: 1.5em;
     background: goldenrod;
+    border: none;
+    border-radius: 2px;
+}
+
+#new-card-button{
+    display: inline-block;
+    visibility: hidden;
+    width: 9.150rem;
+    padding: 0.5rem;
+}
+
+#stand-button{
+    display: inline-block;
+    visibility: hidden;
+    width: 9.150rem;
+    padding: 0.5rem;
 }
