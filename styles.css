@@ -37,8 +37,17 @@ p {
     font-size: 2.5em;
 }
 
+.display-game{
+    visibility: hidden;
+}
+
 .main-buttons {
+    display: block;
+    margin: 0.25em auto;
+    width: 50%; 
+    padding: 0.5em;
+    text-align: center;
     color: rgb(1, 1, 1);
-    width: 150px;
+    width: 9.375rem;
     background: goldenrod;
 }
