@@ -4,7 +4,7 @@ function player(name,money){
 }
 
 let player1 = new player("felipe",1000);
-let dealer = new player("goofy",1000);
+let dealer = new player("goofy",10000);
 
 let playing;
 let message = document.getElementById("main-message");
@@ -34,17 +34,15 @@ function getCards(){
 }
 
 function hit(){
-    if (playerCards){
-        player.cards.push(getCards())
-        pl
+    if (getSum(playerCardsValues) < 21){
+        playerCardsValues.push(getCards())
+        Game();
     }
 }
 
 function stand(){
     console.log("I stand still!!")
 }
-
-
 
 function startGame(){
     startGameButton.textContent = "double";
@@ -63,6 +61,18 @@ function startGame(){
     Game();
 }
 
+function getSum(cardsValues){
+    let sum = 0;
+    for (let index = 0; index < cardsValues.length; index++) {
+        sum = sum + cardsValues[index];
+    }
+    return sum;
+}
+
+function displaySums(sum, name, sumDisplay){
+    sumDisplay.textContent = name + " sum: " + sum;
+}
+
 function displayCards(playerDisplay, cardsDisplay, cardsValues){
     cardsDisplay.textContent = playerDisplay + " cards: ";
     for (i = 0; i < cardsValues.length; i++){
@@ -77,12 +87,11 @@ function displayCards(playerDisplay, cardsDisplay, cardsValues){
 }
 
 function Game() {
-    displayCards(player1.name, playerCards, playerCardsValues)
-    displayCards(dealer.name, dealerCards, dealerCardsValues)
-    let sumOfCards = playerCardsValues[0] + playerCardsValues[1];
-    playerCardsValues.push(getCards());
-    displayCards(player1.name, playerCards, playerCardsValues);
-    
-    checkBlackjack(sumOfCards);
-    
+    if (playing){
+        displayCards(player1.name, playerCards, playerCardsValues)
+        displayCards(dealer.name, dealerCards, dealerCardsValues)
+        displaySums(getSum(playerCardsValues),player1.name,playerSumedCards);
+        displaySums(getSum(dealerCardsValues),dealer.name,dealerSumedCards);
+        checkBlackjack(getSum(playerCardsValues));
+    }  
 }
