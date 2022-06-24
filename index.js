@@ -1,6 +1,7 @@
 let playing = true;
 let message = document.getElementById("main-message");
-let cards
+let cards = document.getElementById("cards-paragraph");
+let sumedCards = document.getElementById("sum-paragraph");
 
 function checkBlackjack(sumOfCards){
     
@@ -17,13 +18,16 @@ function checkBlackjack(sumOfCards){
 
 }
 
+function getCards(){
+    return Math.floor(Math.random() * 10) + 2;
+}
 
 function startGame() {
     playing = true;
-    let firstCard = Math.floor(Math.random() * 10) + 2;
-    let secondCard = Math.floor(Math.random() * 10) + 2;
-    firstCard
-    console.log(secondCard)
+    let firstCard = getCards();
+    let secondCard = getCards();
+    cards.textContent += firstCard + ", " + secondCard;
+    sumedCards.textContent += firstCard + secondCard;
     
     checkBlackjack(secondCard + firstCard);
     
