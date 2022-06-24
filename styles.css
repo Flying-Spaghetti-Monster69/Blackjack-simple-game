@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');
+
+* {
+    margin: 0;
+}
+
+body {
+    height: 100vh;
+}
+
+main {
+    width: 100%;
+    background-color: rgba(128, 128, 128, 0.31);
+    background-image: url(./imgs/background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-blend-mode: multiply;
+    display: block;
+    height: 100%;
+    text-align: center;
+}
+
+.title {
+    font-family: 'Pinyon Script', cursive;
+    font-size: 5em;
+
+    padding-top: 5vh;
+    padding-bottom: 5vh;
+    color: rgb(208, 0, 0);
+}
+
+p {
+    color: white;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    font-size: 2.5em;
+}
+
+.main-buttons {
+    color: rgb(1, 1, 1);
+    width: 150px;
+    background: goldenrod;
+}
