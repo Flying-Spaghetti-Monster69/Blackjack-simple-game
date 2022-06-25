@@ -6,6 +6,12 @@ function player(name,money){
 let player1 = new player("felipe",1000);
 let dealer = new player("goofy",10000);
 
+let A = {
+    name: "A",
+    highValue: 11,
+    lowValue:1
+}
+
 let playing;
 let message = document.getElementById("main-message");
 let playerCards = document.getElementById("player-cards-paragraph");
@@ -15,28 +21,41 @@ let dealerSumedCards = document.getElementById("dealer-sum-paragraph");
 let standButton = document.getElementById("stand-button");
 let startGameButton = document.getElementById("start-game-button");
 let newCardButton = document.getElementById("new-card-button");
-let playerCardsValues = [];
-let dealerCardsValues = [];
+let playerCardsValues;
+let dealerCardsValues;
 
 function checkBlackjack(sumOfCards){
     if (sumOfCards === 21) {
     message.textContent ="you got blackjack!";
     playing = false;
+    dealerTurn();
     } else if (sumOfCards < 21) {
     message.textContent ="wanna draw another card?";
     } else {
     message.textContent = "you lost!";
-    playing = false;}
+    playing = false;
+    dealerTurn();
+}
+
+}
+
+function dealerTurn(){
+
 }
 
 function getCards(){
-    return Math.floor(Math.random() * 10) + 2;
+    card = Math.floor(Math.random() * 10) + 2;
+    if (card == 11) {
+        return A;
+    } else{
+        return card;
+    }
 }
 
 function hit(){
     if (getSum(playerCardsValues) < 21){
         playerCardsValues.push(getCards())
-        Game();
+        display();
     }
 }
 
@@ -50,15 +69,21 @@ function startGame(){
     playerCards.style.visibility = "visible";
     playerSumedCards.style.visibility = "visible";
     dealerCards.style.visibility = "visible";
-    dealerSumedCards.style.visibility = "visible";
     newCardButton.style.visibility = "visible";
     standButton.style.visibility = "visible";
+
     playing = true;
+    playerCardsValues = [];
+    dealerCardsValues = [];
+
     playerCardsValues.push(getCards());
     playerCardsValues.push(getCards());
     dealerCardsValues.push(getCards());
     dealerCardsValues.push(getCards());
-    Game();
+
+    dealerCards.textContent = dealer.name + " up card: " + dealerCardsValues[0]; 
+
+    display();
 }
 
 function getSum(cardsValues){
@@ -76,7 +101,12 @@ function displaySums(sum, name, sumDisplay){
 function displayCards(playerDisplay, cardsDisplay, cardsValues){
     cardsDisplay.textContent = playerDisplay + " cards: ";
     for (i = 0; i < cardsValues.length; i++){
-        cardsDisplay.textContent += cardsValues[i];
+        if (typeof cardsValues[i] == "object") {
+            cardsDisplay.textContent += cardsValues[i].name;
+        }else{
+            cardsDisplay.textContent += cardsValues[i];
+        }
+        
         if(i == cardsValues.length-1){
             break;
         }else{
@@ -86,12 +116,10 @@ function displayCards(playerDisplay, cardsDisplay, cardsValues){
     }
 }
 
-function Game() {
+function display() {
     if (playing){
         displayCards(player1.name, playerCards, playerCardsValues)
-        displayCards(dealer.name, dealerCards, dealerCardsValues)
         displaySums(getSum(playerCardsValues),player1.name,playerSumedCards);
-        displaySums(getSum(dealerCardsValues),dealer.name,dealerSumedCards);
         checkBlackjack(getSum(playerCardsValues));
     }  
 }
