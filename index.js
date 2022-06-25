@@ -40,7 +40,14 @@ function checkBlackjack(sumOfCards){
 }
 
 function dealerTurn(){
-
+    dealerSumedCards.style.visibility = "visible";
+    displayCards(dealer.name, dealerCards, dealerCardsValues);
+    displaySums(getSum(dealerCardsValues),dealer.name,dealerCardsValues)
+    while (getSum(dealerCardsValues) < 17){
+        dealerCardsValues.push(getCards());
+    }
+    displayCards(dealer.name, dealerCards, dealerCardsValues);
+    displaySums(getSum(dealerCardsValues),dealer.name,dealerSumedCards);
 }
 
 function getCards(){
