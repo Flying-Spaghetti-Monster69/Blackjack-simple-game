@@ -81,18 +81,33 @@ function startGame(){
     dealerCardsValues.push(getCards());
     dealerCardsValues.push(getCards());
 
-    dealerCards.textContent = dealer.name + " up card: " + dealerCardsValues[0]; 
+    if (typeof dealerCardsValues[0] == "object") {
+        dealerCards.textContent = dealer.name + " up card: " + dealerCardsValues[0].name;
+    } else {
+        dealerCards.textContent = dealer.name + " up card: " + dealerCardsValues[0];
+    }
+     
 
     display();
 }
 
 function getSum(cardsValues){
     let sum = 0;
-    for (let index = 0; index < cardsValues.length; index++) {
-        sum = sum + cardsValues[index];
+    const objectsArray = cardsValues.filter(object => { return typeof object == "object"});
+    const numbersArray = cardsValues.filter(numbers => { return typeof numbers == "number"});
+    for (let index = 0; index < numbersArray.length; index++) {
+        sum += numbersArray[index];
+    }
+    for(let i = 0; i < objectsArray.length; i++){
+        if (sum + objectsArray[i] <= 21){
+            sum += objectsArray[i].highValue; 
+        }else{
+            sum += objectsArray[i].lowValue;
+        }
     }
     return sum;
 }
+
 
 function displaySums(sum, name, sumDisplay){
     sumDisplay.textContent = name + " sum: " + sum;
