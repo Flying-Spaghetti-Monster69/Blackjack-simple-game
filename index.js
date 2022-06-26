@@ -47,6 +47,7 @@ function isPlaying(playerSum){
         checkWinner(getSum(dealerCardsValues),getSum(playerCardsValues));
     } else if (playerSum > 21) {
         playing = false;
+        dealerSumedCards.style.visibility = "visible";
         displayDealer();
         message.textContent = "you lost! :(";
     }
@@ -89,6 +90,21 @@ function getCards(){
     }
 }
 
+function double() {
+    if (playing) {
+        playing = false;
+        playerCardsValues.push(getCards());
+        displayPlayer();
+        dealerTurn();
+        if (getSum(playerCardsValues) > 21) {
+        message.textContent = "you lost! :C";
+        } else if (getSum(dealerCardsValues) > 21) {
+        message.textContent = "you won! :D";
+        }else{
+        checkWinner(getSum(dealerCardsValues), getSum(playerCardsValues));}    
+    } 
+}
+
 function hit(){
     if (getSum(playerCardsValues) < 21){
         playerCardsValues.push(getCards())
@@ -109,8 +125,8 @@ function stand(){
 }
 
 function startGame(){
-    startGameButton.textContent = "double";
-    startGameButton.style.visibility = "hidden";
+    startGameButton.textContent = "Double";
+    startGameButton.onclick = double;
     playerCards.style.visibility = "visible";
     playerSumedCards.style.visibility = "visible";
     dealerCards.style.visibility = "visible";
