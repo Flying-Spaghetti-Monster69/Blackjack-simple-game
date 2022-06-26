@@ -28,9 +28,11 @@ function checkBlackjack(sumOfCards){
     if (sumOfCards === 21) {
     playing = false;
     displayDealer();
+    displayPlayer();
         if (getSum(dealerCardsValues) == sumOfCards) {
         message.textContent = "Draw!"; 
         } else {
+        
         message.textContent = "Blackjack! congrats! :D";
         }
     } else {
