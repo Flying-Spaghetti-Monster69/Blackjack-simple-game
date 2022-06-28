@@ -5,7 +5,7 @@
 }
 
 body {
-    height: 100vh;
+    height: 110vh;
 }
 
 main {
@@ -16,7 +16,7 @@ main {
     background-position-x: center;
     background-blend-mode: multiply;
     display: block;
-    height: 100vh;
+    height: 100%;
     text-align: center;
 }
 
@@ -41,6 +41,17 @@ p {
     padding-bottom: 1vh;
     font-size: 2em;
 
+}
+
+label{
+    color: white;
+    font-size: 2em;
+}
+
+input{
+    display: inline-block;
+    height: 2.5vh;
+    width: 15vw;
 }
 
 .display-game{
@@ -74,4 +85,8 @@ p {
     visibility: hidden;
     width: 6.1rem;
     padding: 0.5rem;
+}
+
+#split-button{
+    visibility: hidden;
 }

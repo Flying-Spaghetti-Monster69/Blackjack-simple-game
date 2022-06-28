@@ -19,20 +19,59 @@ let playerSumedCards = document.getElementById("player-sum-paragraph");
 let dealerCards = document.getElementById("dealer-cards-paragraph");
 let dealerSumedCards = document.getElementById("dealer-sum-paragraph");
 let standButton = document.getElementById("stand-button");
-let startGameButton = document.getElementById("start-game-button");
+let mainGameButton = document.getElementById("main-game-button");
 let newCardButton = document.getElementById("new-card-button");
+let splitButton = document.getElementById("split-button");
+let input = document.getElementById("input");
+let label = document.getElementById("label");
 let playerCardsValues;
 let dealerCardsValues;
+let playerWager;
+
+function start(){
+    input.style.visibility = "visible";
+    label.style.visibility = "visible";
+    mainGameButton.textContent = "Submit";
+    message.textContent = "hello! what's your name? (between 1 and 20 characters)";
+    mainGameButton.onclick = submit;
+}
+
+function submit() {
+    let name = input.value;
+    if (name.length == 0 ) {
+        message.textContent = "name can't be in blank";
+    } else if (name.length > 20){
+        message.textContent = "name too long";
+    }else{
+        let player1 = new player(name, 1000);
+        message.textContent = "insert your wager";
+        label.textContent = "wager";
+        mainGameButton.textContent = "start game";
+        input.type = "number";
+        mainGameButton.onclick = wager;
+    }
+}
+
+function wager() {
+    playerWager = input.value;
+    if (playerWager > player1.money) {
+        message.textContent = "you can't wager more than you have in your bank";
+    } else if (playerWager == 0) {
+        message.textContent = "you need to insert a value";
+    }else{
+        startGame();
+    }
+}
 
 function checkBlackjack(sumOfCards){
     if (sumOfCards === 21) {
-    playing = false;
-    displayDealer();
-    displayPlayer();
+        dealerSumedCards.style.visibility = "hidden";
+        playing = false;
+        displayDealer();
+        displayPlayer();
         if (getSum(dealerCardsValues) == sumOfCards) {
         message.textContent = "Draw!"; 
         } else {
-        
         message.textContent = "Blackjack! congrats! :D";
         }
     } else {
@@ -106,6 +145,8 @@ function double() {
 }
 
 function hit(){
+    mainGameButton.style.visibility = "hidden";
+    splitButton.style.visibility = "hidden";
     if (getSum(playerCardsValues) < 21){
         playerCardsValues.push(getCards())
         game();
@@ -113,6 +154,8 @@ function hit(){
 }
 
 function stand(){
+    mainGameButton.style.visibility = "hidden";
+    splitButton.style.visibility = "hidden";
     if (playing) {
         playing = false;
         dealerTurn();
@@ -125,13 +168,14 @@ function stand(){
 }
 
 function startGame(){
-    startGameButton.textContent = "Double";
-    startGameButton.onclick = double;
+    mainGameButton.textContent = "Double";
+    mainGameButton.onclick = double;
     playerCards.style.visibility = "visible";
     playerSumedCards.style.visibility = "visible";
     dealerCards.style.visibility = "visible";
     newCardButton.style.visibility = "visible";
     standButton.style.visibility = "visible";
+    splitButton.style.visibility = "visible";
 
     playing = true;
     playerCardsValues = [];
