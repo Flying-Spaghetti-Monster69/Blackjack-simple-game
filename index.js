@@ -2,8 +2,7 @@ function player(name,money){
     this.name = name;
     this.money = money;
 }
-
-let player1 = new player("felipe",1000);
+let player1;
 let dealer = new player("goofy",10000);
 
 let A = {
@@ -22,6 +21,7 @@ let standButton = document.getElementById("stand-button");
 let mainGameButton = document.getElementById("main-game-button");
 let newCardButton = document.getElementById("new-card-button");
 let splitButton = document.getElementById("split-button");
+let playerParagraph = document.getElementById("player-bank-display");
 let input = document.getElementById("input");
 let label = document.getElementById("label");
 let playerCardsValues;
@@ -43,13 +43,18 @@ function submit() {
     } else if (name.length > 20){
         message.textContent = "name too long";
     }else{
-        let player1 = new player(name, 1000);
+        player1 = new player(name, 1000);
+        displayMoney();
         message.textContent = "insert your wager";
         label.textContent = "wager";
         mainGameButton.textContent = "start game";
         input.type = "number";
         mainGameButton.onclick = wager;
     }
+}
+
+function displayMoney() {
+    playerParagraph.textContent = player1.name+"'s bank: $"+player1.money;
 }
 
 function wager() {
@@ -59,6 +64,8 @@ function wager() {
     } else if (playerWager == 0) {
         message.textContent = "you need to insert a value";
     }else{
+        label.style.visibility = "hidden";
+        input.style.visibility = "hidden";
         startGame();
     }
 }
@@ -72,7 +79,9 @@ function checkBlackjack(sumOfCards){
         if (getSum(dealerCardsValues) == sumOfCards) {
         message.textContent = "Draw!"; 
         } else {
-        message.textContent = "Blackjack! congrats! :D";
+        message.textContent = "Blackjack! congrats! :D +$"+playerWager*1.5;
+        player1.money = player1.money + playerWager*1.5;
+        displayMoney();
         }
     } else {
         message.textContent ="wanna draw another card?";
@@ -83,22 +92,38 @@ function isPlaying(playerSum){
     if (playerSum === 21) {
         playing = false;
         dealerTurn();
-        checkWinner(getSum(dealerCardsValues),getSum(playerCardsValues));
+        checkWinner(getSum(dealerCardsValues),getSum(playerCardsValues), false);
     } else if (playerSum > 21) {
         playing = false;
         dealerSumedCards.style.visibility = "visible";
         displayDealer();
-        message.textContent = "you lost! :(";
+        message.textContent = "you lost! :( -$"+playerWager;
+        player1.money = playe1.money - playerWager;
+        displayMoney();
     }
 }
 
-function checkWinner(dealerSum, playerSum){
+function checkWinner(dealerSum, playerSum, isDoubled){
     if (playerSum == dealerSum) {
         message.textContent = "Draw!";
     } else if (playerSum < dealerSum) {
-        message.textContent = "you lost! :(";
+        if (isDoubled) {
+            message.textContent = "you lost! :( -$" + playerWager*2;
+            player1.money = player1.money - (playerWager*2);
+        } else {
+            message.textContent = "you lost! :( -$" + playerWager;
+            player1.money = player1.money - playerWager;
+        }
+        displayMoney();
     } else{
-        message.textContent = "you won! congrats! :D"
+        if (isDoubled) {
+            message.textContent = "you won! congrats! :D +$" + playerWager*2;
+            player1.money = player1.money + (playerWager*2);
+        } else {
+            message.textContent = "you won! congrats! :D +$" + playerWager;
+            player1.money = player1.money + playerWager;
+        }
+        displayMoney();
     }
 }
 
@@ -136,11 +161,15 @@ function double() {
         displayPlayer();
         dealerTurn();
         if (getSum(playerCardsValues) > 21) {
-        message.textContent = "you lost! :C";
+        message.textContent = "you lost! :C -$" +playerWager;
+        player1.money = player1.money - (playerWager*2);
+        displayMoney();
         } else if (getSum(dealerCardsValues) > 21) {
-        message.textContent = "you won! :D";
+        message.textContent = "you won! :D +$"+ playerWager;
+        player1.money = player1.money + (playerWager*2);
+        displayMoney();
         }else{
-        checkWinner(getSum(dealerCardsValues), getSum(playerCardsValues));}    
+        checkWinner(getSum(dealerCardsValues), getSum(playerCardsValues), true);}    
     } 
 }
 
@@ -160,9 +189,10 @@ function stand(){
         playing = false;
         dealerTurn();
         if (getSum(dealerCardsValues) <= 21) {
-            checkWinner(getSum(dealerCardsValues),getSum(playerCardsValues));
+            checkWinner(getSum(dealerCardsValues),getSum(playerCardsValues), false);
         } else{
-            message.textContent = "you won! :D"
+            message.textContent = "you won! :D +$" + playerWager;
+            player1.money + playerWager;
         } 
     }
 }

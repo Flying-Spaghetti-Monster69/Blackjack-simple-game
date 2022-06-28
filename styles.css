@@ -5,7 +5,7 @@
 }
 
 body {
-    height: 110vh;
+    height: 120vh;
 }
 
 main {
@@ -44,14 +44,17 @@ p {
 }
 
 label{
+    display: block;
     color: white;
-    font-size: 2em;
+    font-size: 1.5em;
+    visibility: hidden;
 }
 
 input{
     display: inline-block;
     height: 2.5vh;
-    width: 15vw;
+    width: 25vw;
+    visibility: hidden;
 }
 
 .display-game{
