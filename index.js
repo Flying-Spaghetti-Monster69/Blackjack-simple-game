@@ -1,3 +1,18 @@
+/* 
+
+------------------------------------------------
+table of contents
+
+0. goblal variables
+1. stages intializer fuctions (sections of the game)
+2. check winner fuctions
+3. display fuctions
+4. buttons fuctions
+5. return fuctions
+------------------------------------------------
+
+*/
+
 function player(name,money){
     this.name = name;
     this.money = money;
@@ -28,6 +43,12 @@ let playerCardsValues;
 let dealerCardsValues;
 let playerWager;
 
+/*
+
+   stages intializer fuctions (sections of the game)
+
+*/ 
+
 function start(){
     input.style.visibility = "visible";
     label.style.visibility = "visible";
@@ -53,9 +74,7 @@ function submit() {
     }
 }
 
-function displayMoney() {
-    playerParagraph.textContent = player1.name+"'s bank: $"+player1.money;
-}
+
 
 function wager() {
     playerWager = input.value;
@@ -69,6 +88,59 @@ function wager() {
         startGame();
     }
 }
+
+function startGame(){
+    mainGameButton.textContent = "Double";
+    mainGameButton.onclick = double;
+    playerCards.style.visibility = "visible";
+    playerSumedCards.style.visibility = "visible";
+    dealerCards.style.visibility = "visible";
+    newCardButton.style.visibility = "visible";
+    standButton.style.visibility = "visible";
+
+    playing = true;
+    playerCardsValues = [];
+    dealerCardsValues = [];
+
+    playerCardsValues.push(getCards());
+    playerCardsValues.push(getCards());
+    dealerCardsValues.push(getCards());
+    dealerCardsValues.push(getCards());
+
+    if (typeof dealerCardsValues[0] == "object") {
+        dealerCards.textContent = dealer.name + " up card: " + dealerCardsValues[0].name;
+    } else {
+        dealerCards.textContent = dealer.name + " up card: " + dealerCardsValues[0];
+    }
+    checkBlackjack(getSum(playerCardsValues));
+
+    if (playerCardsValues[0] == playerCardsValues[1]) {
+        splitButton.style.visibility = "visible";
+    }
+
+    game();
+}
+
+function game() {
+    if (playing){
+        displayPlayer();
+        isPlaying(getSum(playerCardsValues));
+    }  
+}
+
+function dealerTurn(){
+    dealerSumedCards.style.visibility = "visible";
+    while (getSum(dealerCardsValues) < 17){
+        dealerCardsValues.push(getCards());
+    }
+    displayDealer();
+}
+
+/*
+
+  check winner fuctions
+
+*/ 
 
 function checkBlackjack(sumOfCards){
     if (sumOfCards === 21) {
@@ -98,7 +170,7 @@ function isPlaying(playerSum){
         dealerSumedCards.style.visibility = "visible";
         displayDealer();
         message.textContent = "you lost! :( -$"+playerWager;
-        player1.money = playe1.money - playerWager;
+        player1.money = player1.money - playerWager;
         displayMoney();
     }
 }
@@ -121,12 +193,17 @@ function checkWinner(dealerSum, playerSum, isDoubled){
             player1.money = player1.money + (playerWager*2);
         } else {
             message.textContent = "you won! congrats! :D +$" + playerWager;
-            player1.money = player1.money + playerWager;
+            player1.money = player1.money + Number(playerWager);
         }
         displayMoney();
     }
 }
 
+/*
+
+  display fuctions
+
+*/
 
 function displayDealer(){
     displayCards(dealer.name, dealerCards, dealerCardsValues);
@@ -137,22 +214,38 @@ function displayPlayer(){
     displaySums(getSum(playerCardsValues),player1.name,playerSumedCards);
 }
 
-function dealerTurn(){
-    dealerSumedCards.style.visibility = "visible";
-    while (getSum(dealerCardsValues) < 17){
-        dealerCardsValues.push(getCards());
-    }
-    displayDealer();
+function displaySums(sum, name, sumDisplay){
+    sumDisplay.textContent = name + " sum: " + sum;
 }
 
-function getCards(){
-    card = Math.floor(Math.random() * 10) + 2;
-    if (card == 11) {
-        return A;
-    } else{
-        return card;
+function displayCards(playerDisplay, cardsDisplay, cardsValues){
+    cardsDisplay.textContent = playerDisplay + " cards: ";
+    for (i = 0; i < cardsValues.length; i++){
+        if (typeof cardsValues[i] == "object") {
+            cardsDisplay.textContent += cardsValues[i].name;
+        }else{
+            cardsDisplay.textContent += cardsValues[i];
+        }
+        
+        if(i == cardsValues.length-1){
+            break;
+        }else{
+            cardsDisplay.textContent += ", "
+        }
+        
     }
 }
+
+function displayMoney() {
+    playerParagraph.textContent = player1.name+"'s bank: $"+player1.money;
+    console.log(player1.money)
+}
+
+/*
+
+   buttons fuctions
+
+*/
 
 function double() {
     if (playing) {
@@ -192,38 +285,25 @@ function stand(){
             checkWinner(getSum(dealerCardsValues),getSum(playerCardsValues), false);
         } else{
             message.textContent = "you won! :D +$" + playerWager;
-            player1.money + playerWager;
+            player1.money = player1.money + playerWager;
+            displayMoney();
         } 
     }
 }
 
-function startGame(){
-    mainGameButton.textContent = "Double";
-    mainGameButton.onclick = double;
-    playerCards.style.visibility = "visible";
-    playerSumedCards.style.visibility = "visible";
-    dealerCards.style.visibility = "visible";
-    newCardButton.style.visibility = "visible";
-    standButton.style.visibility = "visible";
-    splitButton.style.visibility = "visible";
+/*
 
-    playing = true;
-    playerCardsValues = [];
-    dealerCardsValues = [];
+   return fuctions
 
-    playerCardsValues.push(getCards());
-    playerCardsValues.push(getCards());
-    dealerCardsValues.push(getCards());
-    dealerCardsValues.push(getCards());
+*/
 
-    if (typeof dealerCardsValues[0] == "object") {
-        dealerCards.textContent = dealer.name + " up card: " + dealerCardsValues[0].name;
-    } else {
-        dealerCards.textContent = dealer.name + " up card: " + dealerCardsValues[0];
+function getCards(){
+    card = Math.floor(Math.random() * 10) + 2;
+    if (card == 11) {
+        return A;
+    } else{
+        return card;
     }
-    checkBlackjack(getSum(playerCardsValues));
-
-    game();
 }
 
 function getSum(cardsValues){
@@ -241,34 +321,4 @@ function getSum(cardsValues){
         }
     }
     return sum;
-}
-
-
-function displaySums(sum, name, sumDisplay){
-    sumDisplay.textContent = name + " sum: " + sum;
-}
-
-function displayCards(playerDisplay, cardsDisplay, cardsValues){
-    cardsDisplay.textContent = playerDisplay + " cards: ";
-    for (i = 0; i < cardsValues.length; i++){
-        if (typeof cardsValues[i] == "object") {
-            cardsDisplay.textContent += cardsValues[i].name;
-        }else{
-            cardsDisplay.textContent += cardsValues[i];
-        }
-        
-        if(i == cardsValues.length-1){
-            break;
-        }else{
-            cardsDisplay.textContent += ", "
-        }
-        
-    }
-}
-
-function game() {
-    if (playing){
-        displayPlayer();
-        isPlaying(getSum(playerCardsValues));
-    }  
 }
